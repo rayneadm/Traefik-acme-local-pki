@@ -223,7 +223,17 @@ networks:
     name: webproxy
     external: true
 ```
+In traefik.yml add part about certresolver
+```bash 
+certificatesResolvers:
+  stepca:
+    acme:
+      caServer: "https://acme-ca.home.arpa:9000/acme/acme/directory"
+      email: "admin@home.arpa"
+      storage: "/opt/traefik/acme.json"
+      tlsChallenge: true
 
+```
 Set `acme.json` permissions:
 ```bash
 chmod 600 acme.json
