@@ -33,6 +33,11 @@ tls:
     - certFile: "/ssl/cert.pem"
       keyFile: "/ssl/privkey.pem"
 ```
+```sh
+cat .env
+DOMAIN=home.arpa
+DOMAIN_API=traefik-api.home.arpa
+```
 собственно таким способом можно использовать wildcard сертификат в Trefik.
 Но гораздо интереснее сделать свой центр сертификации и получать сертификаты там. 
 
