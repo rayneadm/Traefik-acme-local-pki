@@ -37,16 +37,18 @@ tls:
 собственно таким способом можно использовать wildcard сертификат в Trefik.
 Но гораздо интереснее сделать свой центр сертификации и получать сертификаты там. 
 
-## ⚙️  Шаги настройки
+# ⚙️  Шаги настройки
+
 - Очевидно нужна возможность управлять DNS A записями.
 - Нужен установленный docker и docker compose plugin.
 - Нужны сертификаты, корневой сертификат и промежуточный сертификаты. 
 > Подойдут любые инструменты, такие как easy-rsa, openssl или любой другой. 
 
+## smallstep/step-ca
+
 Сам smallstep/step-ca можно запустить по их отличной *[инструкции](https://hub.docker.com/r/smallstep/step-ca)* или *[вот тут](https://smallstep.com/docs/tutorials/docker-tls-certificate-authority/index.html)*
 
 ### C помощью docker-compose.yml можно вот так
-
 
 ```yml
 services:
@@ -102,7 +104,8 @@ DNS1=192.168.1.250
 # Вторичный DNS-сервер
 DNS2=192.168.1.240
 ```
-Ну и остался конфигурационный фаил step-ca [подробный пример есть в документации](https://smallstep.com/docs/step-ca/configuration/#example-configuration)
+Ну и остался конфигурационный фаил step-ca *[подробный пример есть в документации](https://smallstep.com/docs/step-ca/configuration/#example-configuration)*   
+
 Мне хватило такого:
 
 ```json
@@ -163,10 +166,8 @@ DNS2=192.168.1.240
 }
 
 ```
+Соббственно содержимое проекта
 
-
-
-<pre>
 ```bash
 .
 ├── data
@@ -175,13 +176,24 @@ DNS2=192.168.1.240
 │   │   └── root-ca.crt # Понятно из названия root сертификат
 │   ├── config
 │   │   └── ca.json  # Конфиг фаил для step-ca пример будет ниже 
-│   ├── db # Директория, на котрую нужно дать права  chown -R 1000:1000 db 
+│   ├── db # Директория, на котрую нужно дать права  chown -R 1000:1000  
 │   └── secrets
 │       ├── intermediate-ca.key # не сложно догадаться ключ
 │       └── password  # вот в этот фаил нужно будет добавить пароль который создавался в .env
 └── docker-compose.yml
 ```
-</pre>
+Итак, помимо конфигурационных файлов нужно не забыть права на директории 
+`chown -R 1000:1000 data`
+`chown 1000:1000 step/secrets/password`
+парооль из этой перменной CA_ENCRYPTION_PASS=
+`echo "<somegneratedpass>" > data/secrets/password`
+
+Если всё взлетело, то
+`curl https://localhost:9000/health`
+выдаст 
+`{"status":"ok"}`
+а так можно посмотреть provisioners
+`curl https://acme-ca.home.arpa:9000/provisioners | jq`
 
 
 
