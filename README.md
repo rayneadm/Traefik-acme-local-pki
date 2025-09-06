@@ -71,7 +71,7 @@ services:
       - './data:/home/step'
       - '/etc/localtime:/etc/localtime:ro'
 ```
-В переменные можно вынести все параметры .env
+В .env можно убрать все переменные
 
 ```yml
 # Имя Центра Сертификации (например, PrivateCorp CA). 
