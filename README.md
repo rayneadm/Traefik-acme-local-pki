@@ -139,7 +139,7 @@ DNS2=192.168.1.240
                                     "disableRenewal": false,
                                     "allowRenewalAfterExpiry": false,
                                     "disableSmallstepExtensions": false,
-                                    "maxTLSCertDuration": "2160h", # Не запускай калькулятор, это 90 дней. ;)
+                                    "maxTLSCertDuration": "2160h", # Это 90 дней. ;)
                                     "defaultTLSCertDuration": "2160h"
                             },
                             "options": {
@@ -168,7 +168,7 @@ DNS2=192.168.1.240
 ```
 Соббственно содержимое проекта
 
-```bash
+```json
 .
 ├── data
 │   ├── certs
@@ -188,6 +188,9 @@ DNS2=192.168.1.240
 парооль из этой перменной CA_ENCRYPTION_PASS=   
 `echo "<somegneratedpass>" > data/secrets/password`   
 
+```bash
+docker ocmpose up -d 
+```
 Если всё взлетело, то   
 `curl https://localhost:9000/health`   
 выдаст    
@@ -195,6 +198,10 @@ DNS2=192.168.1.240
 а так можно посмотреть provisioners   
 `curl https://acme-ca.home.arpa:9000/provisioners | jq`   
 
+Если не особо, то 
+```bash 
+docker compose logs -f
+```
 
 
 
