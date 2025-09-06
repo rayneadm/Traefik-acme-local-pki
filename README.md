@@ -268,6 +268,6 @@ chmod 600 acme.json
 ```
 
 
-Тут видимо всё, если по дороге возник вопрос, что за *[home.arpa](https://www.rfc-editor.org/rfc/rfc8375.html)* можно уточнить в *[rfc8375](https://www.rfc-editor.org/rfc/rfc8375.html)*   . 
+Тут видимо всё, если по дороге возник вопрос, что за **home.arpa** можно уточнить в *[rfc8375](https://www.rfc-editor.org/rfc/rfc8375.html)*   . 
 
 
