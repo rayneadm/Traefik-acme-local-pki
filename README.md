@@ -205,7 +205,57 @@ docker ocmpose up -d
 docker compose logs -f
 ```
 
+## Traefik 
 
+Сам фаил traefik **docker-compose.yml** что бы заработало, нужно чтобы traefik доверял корневому сертификату. 
+Я нашел в интернете несколько способов подключить свой root сертификат в traefik но самый простой и сразу заработваший оказался с добавлением переменной **LEGO_CA_CERTIFICATES**. Думаю смысла пояснять весь фаил нет смысла, раз уж ты читаешь, это видимо знает что такое такое traefik. Если нет, *[читай тут](https://doc.traefik.io/traefik/) .  
+
+```yml
+---
+services:
+  traefik:
+    image: traefik
+    container_name: traefik
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - "--providers.docker.network=webproxy"
+    environment:
+      - LEGO_CA_CERTIFICATES=/etc/ssl/certs/root-ca.crt  
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/acme.json:/opt/traefik/acme.json  
+      - ./data/custom/:/custom/:ro
+      - ./data/ssl/root-ca.crt:/etc/ssl/certs/root-ca.crt:ro  
+      - ./data/basic.auth:/basic.auth
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=stepca"  
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.services.traefik-traefik.loadbalancer.server.port=443"
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicAuth.usersFile=/basic.auth"
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=http"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    networks:
+      - webproxy
+
+networks:
+  webproxy:
+    name: webproxy
+    external: true
+```
 
 
 
