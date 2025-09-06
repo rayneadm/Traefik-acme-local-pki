@@ -43,7 +43,7 @@ tls:
 - Нужны сертификаты, корневой сертификат и промежуточный сертификаты. 
 > Подойдут любые инструменты, такие как easy-rsa, openssl или любой другой. 
 
-Сам smallstep/step-ca можно запустить по их отличной *[инструкции](https://hub.docker.com/r/smallstep/step-ca)* или [вот тут](https://smallstep.com/docs/tutorials/docker-tls-certificate-authority/index.html)
+Сам smallstep/step-ca можно запустить по их отличной *[инструкции](https://hub.docker.com/r/smallstep/step-ca)* или *[вот тут](https://smallstep.com/docs/tutorials/docker-tls-certificate-authority/index.html)*
 
 ### C помощью docker-compose.yml можно вот так
 
