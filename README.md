@@ -33,8 +33,8 @@ tls:
     - certFile: "/ssl/cert.pem"
       keyFile: "/ssl/privkey.pem"
 ```
-```sh
-cat .env
+Переменные в .env:
+```bash
 DOMAIN=home.arpa
 DOMAIN_API=traefik-api.home.arpa
 ```
