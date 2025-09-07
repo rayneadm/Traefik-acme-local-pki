@@ -177,7 +177,8 @@ docker compose logs -f
 
 ## Traefik Configuration
 
-Example `docker-compose.yml` for Traefik with root CA trust:
+Example `docker-compose.yml` for Traefik with root CA trust:  
+Main ting it use enviroment **LEGO_CA_CERTIFICATES**   
 ```yml
 services:
   traefik:
